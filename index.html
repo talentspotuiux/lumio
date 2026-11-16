@@ -1320,6 +1320,155 @@ textarea.input{height:auto;padding:var(--spacing-2) var(--spacing-3);resize:vert
 }
 .reduce-motion .lm-anim *{animation:none!important}
 @keyframes lm-pop{0%{transform:scale(0);fill:#ffd230}55%{fill:#ffb900}100%{transform:scale(1)}}@keyframes lm-v{from{transform:scaleY(0)}to{transform:scaleY(1)}}@keyframes lm-h{from{transform:scaleX(0)}to{transform:scaleX(1)}}@keyframes lm-up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ============================================================
+   Homepage (Version 3): greeting, featured metric, shortcuts, recently viewed
+   Rounded corners and warm glass surfaces, scoped to the homepage and sidebar.
+   ============================================================ */
+:root{--hm-glass:#ffffffc7;--hm-line:#e5e5e5b3;--hm-tile:#fff1e6;--hm-active:#ffedd4;--hm-radius:8px;--bg-glow:.7}
+[data-theme="dark"]{--hm-glass:#171717b3;--hm-line:#ffffff14;--hm-tile:#ff69001f;--hm-active:#ff69001f}
+
+/* sidebar */
+/* brand row: 40px logo with 16px of air above and below, left edge in line with the nav icons */
+.sb-brand{height:72px;border-bottom:0;padding:0 var(--spacing-6)}
+.sidebar .logo-full{height:40px}
+@media (min-width:1025px){
+  .sb-collapsed .sidebar .sb-mark.logo-on-light,[data-theme="dark"] .sb-collapsed .sidebar .sb-mark.logo-on-dark{height:36px}
+}
+.sb-body{padding:0 var(--spacing-3)}
+.sb-group-label{height:36px;padding:0 var(--spacing-3);font-size:13px;line-height:16px}
+.sb-group-toggle{width:100%;justify-content:space-between;border:0;background:transparent;cursor:pointer;text-align:left}
+.sb-group-toggle:hover{color:var(--foreground)}
+.sb-group-toggle svg.i{transition:transform .15s}
+.sb-group-toggle[aria-expanded="false"] svg.i{transform:rotate(-90deg)}
+.sidebar .sb-item{height:42px;gap:var(--spacing-3);padding:0 var(--spacing-3);border-radius:var(--hm-radius);font-size:15px;color:var(--neutral-800)}
+.sidebar .sb-item svg.i{width:20px;height:20px;stroke-width:1.75;color:var(--neutral-600)}
+.sidebar .sb-item:hover{background:var(--muted)}
+.sidebar .sb-item[aria-current="page"]{background:var(--hm-active);color:var(--primary);box-shadow:none}
+.sidebar .sb-item[aria-current="page"] svg.i{color:var(--orange-600)}
+[data-theme="dark"] .sidebar .sb-item svg.i{color:var(--neutral-400)}
+[data-theme="dark"] .sidebar .sb-item[aria-current="page"]{color:var(--orange-300)}
+[data-theme="dark"] .sidebar .sb-item[aria-current="page"] svg.i{color:var(--orange-400)}
+.sb-collapse .sb-item{height:36px;font-size:14px}
+.sb-collapse .sb-item svg.i{width:16px;height:16px}
+.sb-footer{padding:var(--spacing-3)}
+.user-btn{border-radius:var(--hm-radius)}
+.user-btn .avatar{width:36px;height:36px;background:var(--card);border:1px solid var(--border);box-shadow:var(--shadow-xs)}
+.user-btn strong{font-size:15px;line-height:20px}
+@media (min-width:1025px){
+  .sb-collapsed .sb-group-toggle svg.i{display:none}
+  .sb-collapsed #sb-domains[hidden]{display:block}
+}
+
+/* page */
+/* the home view fills the column to the bottom, so the glow runs behind the transparent footer */
+.hm{position:relative;isolation:isolate;overflow:hidden;flex:1;display:flex;flex-direction:column;padding:var(--spacing-16) var(--gutter) var(--spacing-8)}
+.hm[hidden]{display:none}
+.hm::before{content:"";position:absolute;inset:0;z-index:-2;pointer-events:none;background:
+  radial-gradient(34% 46% at 86% 22%,#ffb86a66 0%,#ffb86a00 70%),
+  radial-gradient(28% 36% at 66% 4%,#ffd6a799 0%,#ffd6a700 70%),
+  radial-gradient(30% 40% at 0% 100%,#ffedd4 0%,#ffedd400 70%),
+  linear-gradient(180deg,#fffaf6 0%,var(--background) 100%)}
+.hm::after{content:"";position:absolute;z-index:-1;pointer-events:none;width:1100px;height:1100px;right:-520px;top:-560px;border-radius:50%;
+  background:radial-gradient(closest-side,#ffffff00 64%,#ff890424 72%,#ffb86a1f 82%,#ffffff00 96%);filter:blur(2px)}
+[data-theme="dark"] .hm::before{background:radial-gradient(34% 46% at 86% 22%,#f5490033 0%,#f5490000 70%),radial-gradient(30% 40% at 0% 100%,#ff890414 0%,#ff890400 70%),var(--background)}
+[data-theme="dark"] .hm::after{opacity:calc(.4 * var(--bg-glow))}
+/* one knob for how strong the warm background washes are (1 = full) */
+.hm::before,.hm::after,.shell::before{opacity:var(--bg-glow)}
+.hm-inner{width:100%;max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:var(--spacing-12)}
+.hm-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:var(--spacing-10);align-items:center}
+.hm-copy{display:flex;flex-direction:column;gap:var(--spacing-5);max-width:640px}
+.hm-greet{margin:0;font:600 13px/16px var(--font-sans);letter-spacing:.06em;text-transform:uppercase;color:var(--primary)}
+.hm h1{margin:0;font:700 clamp(40px,4.4vw,62px)/1.06 var(--font-heading);letter-spacing:-.035em;color:var(--foreground)}
+.hm h1 span{background:linear-gradient(90deg,var(--orange-500),var(--orange-600));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hm-lead{margin:0;font-size:17px;line-height:26px;color:var(--muted-foreground)}
+
+/* search */
+.hm-search{display:flex;align-items:center;gap:var(--spacing-3);height:64px;margin-top:var(--spacing-3);padding:0 var(--spacing-2) 0 var(--spacing-5);background:var(--card);border:1px solid var(--hm-line);border-radius:var(--hm-radius);box-shadow:var(--warm-shadow);transition:border-color .15s,box-shadow .15s}
+.hm-search:focus-within{border-color:var(--orange-300);box-shadow:var(--warm-shadow),0 0 0 4px #ff69001f}
+.hm-search > svg.i{width:20px;height:20px;color:var(--muted-foreground)}
+.hm-search input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;font-size:16px;color:var(--foreground);text-overflow:ellipsis}
+.hm-search input::placeholder{color:var(--muted-foreground)}
+.hm-search input:focus-visible{box-shadow:none}
+.hm-go{width:48px;height:48px;flex:none;display:grid;place-items:center;border:0;border-radius:var(--hm-radius);background:linear-gradient(135deg,var(--orange-400),var(--orange-600));color:var(--white);cursor:pointer;box-shadow:0 10px 20px -8px #f54900a6,inset 0 1px 0 #ffffff4d;transition:transform .15s,box-shadow .15s}
+.hm-go:hover{transform:translateY(-1px);box-shadow:0 14px 24px -8px #f54900b3,inset 0 1px 0 #ffffff4d}
+.hm-go svg.i{width:20px;height:20px;fill:currentColor}
+.hm-try{display:flex;flex-direction:column;gap:var(--spacing-2-5);margin-top:var(--spacing-1)}
+.hm-try > span{font:500 13px/16px var(--font-sans);color:var(--muted-foreground)}
+.hm-chips{display:flex;flex-wrap:wrap;gap:var(--spacing-2-5)}
+.hm-chip{display:inline-flex;align-items:center;gap:var(--spacing-2);height:36px;padding:0 14px;background:var(--hm-glass);border:1px solid var(--hm-line);border-radius:var(--hm-radius);color:var(--foreground);font:500 14px/20px var(--font-sans);text-decoration:none;box-shadow:var(--soft-shadow);transition:border-color .15s,background .15s}
+.hm-chip:hover{background:var(--card);border-color:var(--orange-200)}
+.hm-chip svg.i{width:14px;height:14px;color:var(--orange-500);fill:currentColor}
+
+/* featured metric: a tilted card on a stack of glass panels */
+.hm-stage{position:relative;perspective:1400px;padding:var(--spacing-8) 0 var(--spacing-8) var(--spacing-6)}
+.hm-stage::before,.hm-stage::after{content:"";position:absolute;z-index:0;border-radius:var(--hm-radius);background:#ffffff8c;border:1px solid #ffffffd9;box-shadow:var(--soft-shadow);transform:rotateY(-12deg) rotateX(6deg) rotate(-4deg)}
+.hm-stage::before{inset:-14px 26px 74px 8px;translate:-6px -24px}
+.hm-stage::after{inset:16px 44px 26px -18px;translate:-30px 4px;opacity:.75}
+[data-theme="dark"] .hm-stage::before,[data-theme="dark"] .hm-stage::after{background:#ffffff0a;border-color:#ffffff14}
+.hm-feature{position:relative;z-index:1;display:block;padding:var(--spacing-6) var(--spacing-6) var(--spacing-4);background:var(--card);border:1px solid var(--hm-line);border-radius:var(--hm-radius);color:inherit;text-decoration:none;box-shadow:0 40px 80px -32px #ca350066,0 12px 32px -16px #0a0a0a29;transform:rotateY(-12deg) rotateX(6deg) rotate(-4deg);transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s}
+.hm-feature:hover{transform:rotateY(-6deg) rotateX(3deg) rotate(-2deg) translateY(-4px)}
+.hm-fhead{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-3)}
+.hm-fhead strong{font:600 22px/28px var(--font-heading);letter-spacing:-.3px}
+.hm-cert{display:inline-flex;align-items:center;gap:var(--spacing-1-5);height:30px;padding:0 var(--spacing-3);background:var(--card);border:1px solid var(--hm-line);border-radius:var(--hm-radius);box-shadow:var(--shadow-xs);font:600 13px/16px var(--font-sans);white-space:nowrap}
+.hm-cert svg.i{width:14px;height:14px;color:var(--success);stroke-width:2.5}
+.hm-fval{display:flex;align-items:center;flex-wrap:wrap;gap:var(--spacing-3) var(--spacing-4);margin-top:var(--spacing-4)}
+.hm-fval b{font:700 52px/56px var(--font-heading);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.hm-delta{display:inline-flex;align-items:center;gap:var(--spacing-1);height:32px;padding:0 var(--spacing-3);border-radius:var(--hm-radius);background:#f0fdf4;color:var(--success);font:600 15px/20px var(--font-sans)}
+.hm-delta.bad{background:#fffbeb;color:var(--warning)}
+[data-theme="dark"] .hm-delta{background:#00a63e26}
+[data-theme="dark"] .hm-delta.bad{background:#e1710026}
+.hm-delta svg.i{width:16px;height:16px}
+.hm-fchart{margin-top:var(--spacing-3)}
+.hm-fchart svg{display:block;width:100%;height:auto}
+
+/* shortcuts + recently viewed */
+.hm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--spacing-6)}
+.hm-tile{display:flex;align-items:center;gap:var(--spacing-4);width:100%;min-height:80px;padding:var(--spacing-4) var(--spacing-5);background:var(--hm-glass);border:1px solid var(--hm-line);border-radius:var(--hm-radius);box-shadow:var(--soft-shadow);color:inherit;font:inherit;text-align:left;text-decoration:none;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:border-color .15s,box-shadow .15s,background .15s}
+.hm-tile:hover{background:var(--card);border-color:var(--orange-200);box-shadow:var(--warm-shadow)}
+.hm-ico{width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:var(--hm-radius);background:var(--hm-tile);color:var(--orange-500)}
+.hm-ico svg.i{width:22px;height:22px;stroke-width:1.75}
+.hm-tile > span:not(.hm-ico){flex:1;min-width:0}
+.hm-tile strong{display:block;font:600 16px/22px var(--font-heading);letter-spacing:-.2px}
+.hm-tile small{display:block;margin-top:2px;font-size:13px;line-height:18px;color:var(--muted-foreground)}
+.hm-sec-head{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-4);margin-bottom:var(--spacing-4)}
+.hm-sec-head h2{margin:0;font:600 20px/28px var(--font-heading);letter-spacing:-.3px}
+.hm-more{display:inline-flex;align-items:center;gap:var(--spacing-1);color:var(--primary);font-weight:500;text-decoration:none}
+.hm-more:hover{text-decoration:underline;text-underline-offset:4px}
+.hm-foot{width:100%;max-width:1240px;margin:auto auto 0;padding-top:var(--spacing-12);border-top:0;background:transparent}
+[data-theme="dark"] .hm-greet,[data-theme="dark"] .hm-more{color:var(--orange-400)}
+
+@media (max-width:1180px){.hm-top{grid-template-columns:minmax(0,1fr)}.hm-stage{display:none}.hm-grid{grid-template-columns:minmax(0,1fr);gap:var(--spacing-3)}.hm-inner{gap:var(--spacing-10)}}
+@media (max-width:640px){
+  .hm{padding-top:calc(56px + var(--spacing-10))}
+  .hm-foot{padding-top:var(--spacing-10)}
+  .hm-lead{font-size:16px;line-height:24px}
+  .hm-search{height:56px;padding-left:var(--spacing-4);border-radius:var(--hm-radius)}
+  .hm-go{width:42px;height:42px;border-radius:var(--hm-radius)}
+  .hm-chips{gap:var(--spacing-2)}
+}
+
+/* ---------- Glass: sidebar and top bar are translucent, blurred panels ---------- */
+:root{--glass-bg:linear-gradient(160deg,#ffffffbf 0%,#ffffff80 45%,#ffffff94 100%);--glass-bar:linear-gradient(180deg,#ffffffb3 0%,#ffffff80 100%);--glass-edge:#ffffffd9;--glass-line:#0a0a0a12;--glass-hover:#0a0a0a0a;--glass-blur:blur(20px) saturate(160%)}
+[data-theme="dark"]{--glass-bg:linear-gradient(180deg,#171717b3 0%,#0a0a0a99 100%);--glass-bar:linear-gradient(180deg,#0a0a0ab3 0%,#0a0a0a80 100%);--glass-edge:#ffffff0f;--glass-line:#ffffff14;--glass-hover:#ffffff0f}
+.sidebar{background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border-right:1px solid var(--glass-line);box-shadow:inset -1px 0 0 var(--glass-edge),12px 0 32px -28px #0a0a0a2e}
+.sidebar .sb-item:hover{background:var(--glass-hover)}
+.sb-footer{border-top-color:var(--glass-line)}
+.topbar{background:var(--glass-bar);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border-bottom:1px solid var(--glass-line);box-shadow:inset 0 -1px 0 var(--glass-edge),0 10px 30px -24px #0a0a0a40}
+.hm{margin-top:-56px;padding-top:calc(56px + var(--spacing-16))}
+/* something for the sidebar glass to sit on: a soft warm wash behind its column, kept to the top half */
+@media (min-width:1025px){
+  .shell::before{content:"";position:fixed;top:0;bottom:0;left:0;width:var(--sidebar-width);pointer-events:none;transition:width .2s ease;background:
+    radial-gradient(130% 40% at 0% 0%,#ffd6a7b3 0%,#ffd6a700 70%),
+    radial-gradient(120% 32% at 100% 40%,#ffd6a773 0%,#ffd6a700 72%),
+    linear-gradient(180deg,#fff6ee 0%,var(--background) 72%)}
+  .shell.sb-collapsed::before{width:72px}
+  [data-theme="dark"] .shell::before{background:radial-gradient(130% 38% at 0% 0%,#f5490024 0%,#f5490000 70%),radial-gradient(110% 30% at 100% 42%,#ff89040f 0%,#ff890400 72%),var(--background)}
+}
+/* the mobile sheet opens over a dark scrim, so it needs more body to stay readable */
+@media (max-width:1024px){
+  .sidebar{background:color-mix(in srgb,var(--background) 86%,transparent)}
+}
 </style>
 </head>
 <body>
@@ -1336,15 +1485,18 @@ textarea.input{height:auto;padding:var(--spacing-2) var(--spacing-3);resize:vert
       <div class="sb-group">
         <div class="sb-group-label">Workspace</div>
         <a class="sb-item" href="#" id="nav-home" aria-current="page"><svg class="i" data-icon="house"></svg><span class="sb-label">Home</span></a>
-        <a class="sb-item" href="#/saved" id="nav-saved"><svg class="i" data-icon="bookmark"></svg><span class="sb-label">Bookmark</span><span class="count" id="count-saved"></span></a>
+        <a class="sb-item" href="#/search" id="nav-explore"><svg class="i" data-icon="search"></svg><span class="sb-label">Find a Metric</span></a>
+        <a class="sb-item" href="#/saved" id="nav-saved"><svg class="i" data-icon="bookmark"></svg><span class="sb-label">Bookmarks</span><span class="count" id="count-saved"></span></a>
       </div>
       <div class="sb-group">
-        <div class="sb-group-label">Domains</div>
-        <a class="sb-item" href="#/domain/customer" data-domain="customer"><svg class="i" data-icon="users"></svg><span class="sb-label">Customer</span></a>
-        <a class="sb-item" href="#/domain/finance" data-domain="finance"><svg class="i" data-icon="circle-dollar-sign"></svg><span class="sb-label">Finance</span></a>
-        <a class="sb-item" href="#/domain/marketing" data-domain="marketing"><svg class="i" data-icon="megaphone"></svg><span class="sb-label">Marketing</span></a>
-        <a class="sb-item" href="#/domain/product" data-domain="product"><svg class="i" data-icon="package"></svg><span class="sb-label">Product</span></a>
-        <a class="sb-item" href="#/domain/sales" data-domain="sales"><svg class="i" data-icon="handshake"></svg><span class="sb-label">Sales</span></a>
+        <button type="button" class="sb-group-label sb-group-toggle" id="sb-domains-btn" aria-expanded="true" aria-controls="sb-domains">Domains<svg class="i" data-icon="chevron-down"></svg></button>
+        <div id="sb-domains">
+          <a class="sb-item" href="#/domain/customer" data-domain="customer"><svg class="i" data-icon="users"></svg><span class="sb-label">Customer</span></a>
+          <a class="sb-item" href="#/domain/finance" data-domain="finance"><svg class="i" data-icon="database"></svg><span class="sb-label">Finance</span></a>
+          <a class="sb-item" href="#/domain/marketing" data-domain="marketing"><svg class="i" data-icon="megaphone"></svg><span class="sb-label">Marketing</span></a>
+          <a class="sb-item" href="#/domain/product" data-domain="product"><svg class="i" data-icon="package"></svg><span class="sb-label">Product</span></a>
+          <a class="sb-item" href="#/domain/sales" data-domain="sales"><svg class="i" data-icon="chart-column"></svg><span class="sb-label">Sales</span></a>
+        </div>
       </div>
     </nav>
     <div class="sb-collapse">
@@ -1354,7 +1506,7 @@ textarea.input{height:auto;padding:var(--spacing-2) var(--spacing-3);resize:vert
       <button class="user-btn" type="button" id="profile-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="profile-menu" aria-label="John Doe, open profile menu">
         <span class="avatar" id="me-avatar">JD</span>
         <span class="sb-label"><strong id="me-name">John Doe</strong></span>
-        <svg class="i chev" data-icon="chevrons-up-down"></svg>
+        <svg class="i chev" data-icon="chevron-down"></svg>
       </button>
       <div class="popover" id="profile-menu" role="menu" hidden>
         <div class="popover-label"><span>My account</span></div>
@@ -1393,55 +1545,41 @@ textarea.input{height:auto;padding:var(--spacing-2) var(--spacing-3);resize:vert
       </div>
     </header>
 
-    <!-- ============ Hero ============ -->
-    <!-- ============ Landing hero ============ -->
-    <section class="hero lp-hero view-home" aria-labelledby="hero-title">
-      <div class="lp-inner">
-        <h1 id="hero-title" class="rise">Find the meaning <span>behind the metric.</span></h1>
-        <p class="lead rise rise-1">Explore trusted definitions, connect dimensions, and uncover the insights behind every decision.</p>
-        <form class="ask lp-ask rise rise-2" role="search" onsubmit="return runSearch(event)">
-            <div class="ask-modes" role="group" aria-label="Search mode">
-              <button type="button" class="ask-mode" aria-pressed="true" data-mode="search"><svg class="i" data-icon="search"></svg>Search catalog</button>
-              <button type="button" class="ask-mode" aria-pressed="false" data-mode="ask"><svg class="i" data-icon="sparkles"></svg>Ask Lumio AI</button>
+    <!-- ============ Home ============ -->
+    <main class="hm view-home" aria-labelledby="hero-title">
+      <div class="hm-inner">
+        <div class="hm-top">
+          <div class="hm-copy">
+            <p class="hm-greet rise" id="hm-greet">Welcome back</p>
+            <h1 id="hero-title" class="rise">Find the meaning<br> behind <span>the metric.</span></h1>
+            <p class="hm-lead rise rise-1">Search metrics, explore definitions, or ask Lumio AI for instant answers.</p>
+            <form class="hm-search rise rise-2" role="search" onsubmit="return runSearch(event)">
+              <svg class="i" data-icon="search"></svg>
+              <label for="hero-search" class="sr-only">Search metrics or ask a question</label>
+              <input id="hero-search" type="search" autocomplete="off" placeholder="Search metrics or ask a question...">
+              <button class="hm-go" type="submit" aria-label="Search or ask Lumio AI"><svg class="i" data-icon="sparkles"></svg></button>
+            </form>
+            <div class="hm-try rise rise-3">
+              <span id="hm-try-label">Try asking:</span>
+              <div class="hm-chips" role="group" aria-labelledby="hm-try-label">
+                <a class="hm-chip" href="#/metric/FIN-003"><svg class="i" data-icon="sparkles"></svg>What is gross margin?</a>
+                <a class="hm-chip" href="#/search?q=revenue"><svg class="i" data-icon="sparkles"></svg>Show revenue metrics</a>
+                <a class="hm-chip" href="#/domain/customer"><svg class="i" data-icon="sparkles"></svg>List customer metrics</a>
+              </div>
             </div>
-            <div class="ask-row">
-              <svg class="i" data-icon="search" id="ask-icon"></svg>
-              <label for="hero-search" class="sr-only">Search Lumio</label>
-              <input id="hero-search" type="search" autocomplete="off" placeholder="Search metrics and definitions">
-              <kbd class="kbd" aria-hidden="true">/</kbd>
-              <button class="btn" type="submit" id="ask-submit" aria-label="Search"><span class="label">Search</span><svg class="i" data-icon="arrow-right"></svg></button>
-            </div>
-          </form>
-        <div class="suggest lp-suggest rise rise-3" aria-label="Suggested metrics">
-            <span class="caption">Try</span>
-            <button type="button" class="chip" data-metric="nrr" aria-pressed="true">Net revenue retention</button>
-            <button type="button" class="chip" data-metric="cac" aria-pressed="false">Customer acquisition cost</button>
-            <button type="button" class="chip" data-metric="mau" aria-pressed="false">Monthly active users</button>
-            <button type="button" class="chip" data-metric="churn" data-ask="Why did churn rise last quarter?" aria-pressed="false"><svg class="i" data-icon="sparkles"></svg>Why did churn rise?</button>
           </div>
+          <div class="hm-stage rise rise-2"><a class="hm-feature" id="hm-feature" href="#/metric/FIN-003"></a></div>
+        </div>
 
-        <nav class="lp-links rise rise-3" aria-label="Shortcuts">
-          <a class="lp-link" href="#/search">
-            <svg class="i" data-icon="layers"></svg>
-            <span><strong>Explore the catalog</strong><small>Certified definitions</small></span>
-            <svg class="i go" data-icon="arrow-right"></svg>
-          </a>
-          <a class="lp-link" href="#/saved">
-            <svg class="i" data-icon="bookmark"></svg>
-            <span><strong>Bookmarks</strong><small>The metrics you check most</small></span>
-            <svg class="i go" data-icon="arrow-right"></svg>
-          </a>
-          <a class="lp-link" href="#/review/arr" id="feat-review">
-            <svg class="i" data-icon="shield-check"></svg>
-            <span><strong>Reviews <span class="badge badge-default" id="count-tile">3 pending</span></strong><small>Changes waiting on you</small></span>
-            <svg class="i go" data-icon="arrow-right"></svg>
-          </a>
-        </nav>
+        <section class="hm-recent rise rise-3" aria-labelledby="hm-recent-title">
+          <div class="hm-sec-head">
+            <h2 id="hm-recent-title">Pick up where you left off</h2>
+            <a class="hm-more" href="#/search">View all<svg class="i" data-icon="chevron-right"></svg></a>
+          </div>
+          <div class="hm-grid" id="hm-recent"></div>
+        </section>
       </div>
-    </section>
-
-    <main class="page lp-page lp-min view-home">
-      <footer class="footer"><span>© 2026 Lumio. All rights reserved.</span><span>Design prototype</span></footer>
+      <footer class="footer hm-foot"><span>© 2026 Lumio. All rights reserved.</span><span>Design prototype</span></footer>
     </main>
 
     <!-- ============ Review page (rendered from REVIEWS) ============ -->
@@ -1755,9 +1893,10 @@ const ICONS={
   'handshake':'<path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/>',
   'megaphone':'<path d="m3 11 18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
   'package':'<path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 7.703 4.734a2 2 0 0 0 1.994 0L20.7 7"/><path d="m7.5 4.27 9 5.15"/>',
-  'external-link':'<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>'
+  'external-link':'<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
+  'chevron-down':'<path d="m6 9 6 6 6-6"/>'
 };
-const DOMAIN_ICON={finance:'circle-dollar-sign',sales:'handshake',marketing:'megaphone',product:'package',customer:'users'};
+const DOMAIN_ICON={finance:'database',sales:'chart-column',marketing:'megaphone',product:'package',customer:'users'};
 function hydrateIcons(root){
   (root||document).querySelectorAll('svg[data-icon]').forEach(svg=>{
     svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('aria-hidden','true');
@@ -1785,52 +1924,30 @@ function areaChart(vals,{w=400,h=120,stroke,fill,cls='',dot=true,draw=false}){
   </svg>`;
 }
 
-/* ---------- Hero metric card (example data) ---------- */
-const METRICS={
-  nrr:{name:'Net revenue retention',sub:'Trailing 12 months, by quarter',value:'112%',delta:['+3.4 pts QoQ','good','trending-up'],series:[101,103,102,105,106,108,110,112],x:['Q1 ’25','Q4 ’26'],status:['dot-success','Certified'],owner:'Finance analytics',dims:['Region','Segment','Plan']},
-  cac:{name:'Customer acquisition cost',sub:'Blended, by quarter',value:'$1,240',delta:['−4% QoQ','good','trending-down'],series:[1460,1420,1390,1360,1330,1300,1290,1240],x:['Q1 ’25','Q4 ’26'],status:['dot-success','Certified'],owner:'Growth marketing',dims:['Channel','Region','Segment']},
-  mau:{name:'Monthly active users',sub:'Rolling 30 days, by month',value:'48.2k',delta:['+6.1% MoM','good','trending-up'],series:[36,38,39,41,43,44,46,48.2],x:['Apr','Nov'],status:['dot-success','Certified'],owner:'Product analytics',dims:['Platform','Plan','Region']},
-  churn:{name:'Logo churn',sub:'Quarterly, all segments',value:'2.1%',delta:['+0.4 pts QoQ','bad','trending-up'],series:[1.6,1.7,1.6,1.8,1.7,1.9,1.7,2.1],x:['Q1 ’25','Q4 ’26'],status:['dot-warning','In review'],owner:'Customer success',dims:['Segment','Plan','Tenure']}
-};
-function renderHero(key){
-  const m=METRICS[key];
-  document.querySelectorAll('.chip[data-metric]').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.metric===key)));
-  if(!document.getElementById('mc-name'))return;
-  document.getElementById('mc-name').textContent=m.name;
-  document.getElementById('mc-sub').textContent='Owned by '+m.owner;
-  document.getElementById('mc-value').textContent=m.value;
-    const d=document.getElementById('mc-delta');d.className='delta '+m.delta[1];d.innerHTML=`<svg data-icon="${m.delta[2]}"></svg>${esc(m.delta[0])}`;hydrateIcons(d);
-  document.getElementById('mc-chart').innerHTML=areaChart(m.series,{w:720,h:170,stroke:'#ff8904',fill:'#f54900',draw:true});
-  document.getElementById('mc-x0').textContent=m.x[0];document.getElementById('mc-x1').textContent=m.x[1];
-  document.getElementById('mc-foot').innerHTML=`<span class="owner"><span class="badge badge-outline"><span class="dot ${m.status[0]}"></span>${m.status[1]}</span></span>`+m.dims.map(x=>`<span class="badge badge-outline">${esc(x)}</span>`).join('');
-  document.querySelectorAll('.chip[data-metric]').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.metric===key)));
+/* ---------- Home: greeting, featured metric and recently viewed (example data) ---------- */
+const HOME_FEATURED='FIN-003';
+const HOME_RECENT=[['FIN-003','chart-column','Viewed 2h ago'],['FIN-004','database','Viewed yesterday'],['PRD-002','trending-up','Viewed 2 days ago']];
+function renderHome(){
+  const hr=new Date().getHours();
+  document.getElementById('hm-greet').textContent=`Good ${hr<12?'morning':hr<18?'afternoon':'evening'}, ${PROFILE.name.split(' ')[0]}`;
+  const m=CATALOG.find(x=>x.code===HOME_FEATURED),f=document.getElementById('hm-feature');
+  f.href='#/metric/'+m.code;
+  f.innerHTML=`<div class="hm-fhead"><strong>${esc(m.name)}</strong><span class="hm-cert">${m.status==='certified'?'<svg data-icon="check"></svg>':''}${stLabel(m.status)}</span></div>
+    <div class="hm-fval"><b>${esc(m.value)}</b><span class="hm-delta ${m.delta[1]}"><svg data-icon="${m.delta[2]}"></svg>${esc(m.delta[0])}</span></div>
+    <div class="hm-fchart">${areaChart(m.s,{w:360,h:120,stroke:'#ff8904',fill:'#ff8904',draw:true})}</div>`;
+  const rec=document.getElementById('hm-recent');
+  rec.innerHTML=HOME_RECENT.map(([code,icon,when])=>{const r=CATALOG.find(x=>x.code===code);
+    return `<a class="hm-tile" href="#/metric/${code}"><span class="hm-ico"><svg data-icon="${icon}"></svg></span><span><strong>${esc(r.name)}</strong><small>${esc(when)}</small></span></a>`}).join('');
+  hydrateIcons(f);hydrateIcons(rec);
 }
-document.querySelectorAll('.chip[data-metric]').forEach(c=>c.addEventListener('click',()=>{
-  renderHero(c.dataset.metric);
-  const i=document.getElementById('hero-search');
-  if(c.dataset.ask){setMode('ask');i.value=c.dataset.ask}else{setMode('search');i.value=METRICS[c.dataset.metric].name}
-}));
-renderHero('nrr');
 
-/* ---------- Search modes ---------- */
-function setMode(mode){
-  document.querySelectorAll('.ask-mode').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===mode)));
-  const ask=mode==='ask';
-  document.getElementById('hero-search').placeholder=ask?'Ask a question about any metric':'Search metrics and definitions';
-  document.querySelector('#ask-submit .label').textContent=ask?'Ask':'Search';
-  document.getElementById('ask-submit').setAttribute('aria-label',ask?'Ask Lumio AI':'Search');
-  const ic=document.getElementById('ask-icon');ic.dataset.icon=ask?'sparkles':'search';hydrateIcons(ic.parentNode);
-}
-document.querySelectorAll('.ask-mode').forEach(b=>b.addEventListener('click',()=>{setMode(b.dataset.mode);document.getElementById('hero-search').focus()}));
-function focusSearch(e){if(e)e.preventDefault();toggleSidebar(false);if(location.hash.startsWith('#/review'))location.hash='';const i=document.getElementById(location.hash.startsWith('#/search')?'cat-q':'hero-search');scrollTo({top:0,behavior:'smooth'});i.focus({preventScroll:true})}
+/* ---------- Home search: questions go to Lumio AI, everything else to the catalog ---------- */
+const ASK_RE=/\?$|^(what|why|how|when|where|which|who|is|are|does|do|can|should|show|list|compare|explain)\b/i;
 function runSearch(e){
   e.preventDefault();const q=document.getElementById('hero-search').value.trim();
-  const ask=document.querySelector('.ask-mode[data-mode="ask"]').getAttribute('aria-pressed')==='true';
-  if(ask){toast(q?`Asking Lumio AI: “${q}”`:'Ask Lumio AI','Answers are a design concept in this prototype.','sparkles');return false}
+  if(ASK_RE.test(q)){toast(`Asking Lumio AI: “${q}”`,'Answers are a design concept in this prototype.','sparkles');return false}
   location.hash='/search'+(q?'?q='+encodeURIComponent(q):'');return false;
 }
-document.querySelectorAll('.ai-q').forEach(b=>b.addEventListener('click',()=>{setMode('ask');document.getElementById('hero-search').value=b.dataset.q;focusSearch()}));
-document.getElementById('ai-open')&&document.getElementById('ai-open').addEventListener('click',()=>{setMode('ask');focusSearch()});
 
 /* ---------- Trending metric cards (example data) ---------- */
 const DATA={
@@ -2391,7 +2508,7 @@ function route(){
     if(fromOther){scrollTo(0,0);if(!S_STATE.q)setTimeout(()=>catQ.focus({preventScroll:true}),50)}
   }else{
     home.forEach(e=>e.hidden=false);rv.hidden=true;sv.hidden=true;
-    setCrumbs([['Home']]);setNav('nav-home');
+    renderHome();setCrumbs([['Home']]);setNav('nav-home');
     if(wasAway){const t=h&&h.length>1&&!h.startsWith('#/')&&document.querySelector(h);t?t.scrollIntoView():scrollTo(0,0)}
   }
 }
@@ -2786,6 +2903,8 @@ try{if(localStorage.getItem('lumio-sb-collapsed')==='1')setSidebarCollapsed(true
 
 /* the logo intro runs once on load; dropping the class keeps it from replaying when the sidebar collapses */
 setTimeout(()=>document.documentElement.classList.remove('intro'),2400);
+/* ---------- Sidebar: Domains group opens and closes from its label ---------- */
+document.getElementById('sb-domains-btn').addEventListener('click',e=>{const b=e.currentTarget,open=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(open));document.getElementById('sb-domains').hidden=!open});
 /* ---------- Sidebar (mobile sheet) ---------- */
 function toggleSidebar(open){const sb=document.getElementById('sidebar');sb.classList.toggle('open',open);document.getElementById('scrim').hidden=!open}
 
