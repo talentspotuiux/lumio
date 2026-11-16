@@ -1325,8 +1325,8 @@ textarea.input{height:auto;padding:var(--spacing-2) var(--spacing-3);resize:vert
    Homepage (Version 3): greeting, featured metric, shortcuts, recently viewed
    Rounded corners and warm glass surfaces, scoped to the homepage and sidebar.
    ============================================================ */
-:root{--hm-glass:#ffffffc7;--hm-line:#e5e5e5b3;--hm-tile:#fff1e6;--hm-active:#ffedd4;--hm-radius:8px;--bg-glow:.7}
-[data-theme="dark"]{--hm-glass:#171717b3;--hm-line:#ffffff14;--hm-tile:#ff69001f;--hm-active:#ff69001f}
+:root{--hm-glass:#ffffffc7;--hm-line:#e5e5e5b3;--hm-active:#ffedd4;--hm-radius:8px;--bg-glow:.7}
+[data-theme="dark"]{--hm-glass:#171717b3;--hm-line:#ffffff14;--hm-active:#ff69001f}
 
 /* sidebar */
 /* brand row: 40px logo with 16px of air above and below, left edge in line with the nav icons */
@@ -1375,7 +1375,8 @@ textarea.input{height:auto;padding:var(--spacing-2) var(--spacing-3);resize:vert
 [data-theme="dark"] .hm::after{opacity:calc(.4 * var(--bg-glow))}
 /* one knob for how strong the warm background washes are (1 = full) */
 .hm::before,.hm::after,.shell::before{opacity:var(--bg-glow)}
-.hm-inner{width:100%;max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:var(--spacing-12)}
+/* auto margins centre the content in whatever height is left above the footer */
+.hm-inner{width:100%;max-width:1240px;margin:auto;display:flex;flex-direction:column;gap:var(--spacing-12)}
 .hm-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:var(--spacing-10);align-items:center}
 .hm-copy{display:flex;flex-direction:column;gap:var(--spacing-5);max-width:640px}
 .hm-greet{margin:0;font:600 13px/16px var(--font-sans);letter-spacing:.06em;text-transform:uppercase;color:var(--primary)}
@@ -1422,21 +1423,11 @@ textarea.input{height:auto;padding:var(--spacing-2) var(--spacing-3);resize:vert
 .hm-fchart{margin-top:var(--spacing-3)}
 .hm-fchart svg{display:block;width:100%;height:auto}
 
-/* shortcuts + recently viewed */
+/* shortcuts: the design-system .lp-link card, with the home view's 8px corners */
 .hm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--spacing-6)}
-.hm-tile{display:flex;align-items:center;gap:var(--spacing-4);width:100%;min-height:80px;padding:var(--spacing-4) var(--spacing-5);background:var(--hm-glass);border:1px solid var(--hm-line);border-radius:var(--hm-radius);box-shadow:var(--soft-shadow);color:inherit;font:inherit;text-align:left;text-decoration:none;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:border-color .15s,box-shadow .15s,background .15s}
-.hm-tile:hover{background:var(--card);border-color:var(--orange-200);box-shadow:var(--warm-shadow)}
-.hm-ico{width:44px;height:44px;flex:none;display:grid;place-items:center;border-radius:var(--hm-radius);background:var(--hm-tile);color:var(--orange-500)}
-.hm-ico svg.i{width:22px;height:22px;stroke-width:1.75}
-.hm-tile > span:not(.hm-ico){flex:1;min-width:0}
-.hm-tile strong{display:block;font:600 16px/22px var(--font-heading);letter-spacing:-.2px}
-.hm-tile small{display:block;margin-top:2px;font-size:13px;line-height:18px;color:var(--muted-foreground)}
-.hm-sec-head{display:flex;align-items:center;justify-content:space-between;gap:var(--spacing-4);margin-bottom:var(--spacing-4)}
-.hm-sec-head h2{margin:0;font:600 20px/28px var(--font-heading);letter-spacing:-.3px}
-.hm-more{display:inline-flex;align-items:center;gap:var(--spacing-1);color:var(--primary);font-weight:500;text-decoration:none}
-.hm-more:hover{text-decoration:underline;text-underline-offset:4px}
-.hm-foot{width:100%;max-width:1240px;margin:auto auto 0;padding-top:var(--spacing-12);border-top:0;background:transparent}
-[data-theme="dark"] .hm-greet,[data-theme="dark"] .hm-more{color:var(--orange-400)}
+.hm-grid .lp-link{border-radius:var(--hm-radius)}
+.hm-foot{width:100%;max-width:1240px;margin:0 auto;padding-top:var(--spacing-12);border-top:0;background:transparent}
+[data-theme="dark"] .hm-greet,[data-theme="dark"] .hm-grid .lp-link > svg.i:first-child,[data-theme="dark"] .hm-grid .lp-link:hover .go{color:var(--orange-400)}
 
 @media (max-width:1180px){.hm-top{grid-template-columns:minmax(0,1fr)}.hm-stage{display:none}.hm-grid{grid-template-columns:minmax(0,1fr);gap:var(--spacing-3)}.hm-inner{gap:var(--spacing-10)}}
 @media (max-width:640px){
@@ -1571,13 +1562,23 @@ textarea.input{height:auto;padding:var(--spacing-2) var(--spacing-3);resize:vert
           <div class="hm-stage rise rise-2"><a class="hm-feature" id="hm-feature" href="#/metric/FIN-003"></a></div>
         </div>
 
-        <section class="hm-recent rise rise-3" aria-labelledby="hm-recent-title">
-          <div class="hm-sec-head">
-            <h2 id="hm-recent-title">Pick up where you left off</h2>
-            <a class="hm-more" href="#/search">View all<svg class="i" data-icon="chevron-right"></svg></a>
-          </div>
-          <div class="hm-grid" id="hm-recent"></div>
-        </section>
+        <nav class="hm-grid rise rise-3" aria-label="Shortcuts">
+          <a class="lp-link" href="#/search">
+            <svg class="i" data-icon="layers"></svg>
+            <span><strong>Explore the catalog</strong><small>Certified definitions</small></span>
+            <svg class="i go" data-icon="arrow-right"></svg>
+          </a>
+          <a class="lp-link" href="#/saved">
+            <svg class="i" data-icon="bookmark"></svg>
+            <span><strong>Bookmarks</strong><small>The metrics you check most</small></span>
+            <svg class="i go" data-icon="arrow-right"></svg>
+          </a>
+          <a class="lp-link" href="#/review/arr" id="feat-review">
+            <svg class="i" data-icon="shield-check"></svg>
+            <span><strong>Reviews <span class="badge badge-default" id="count-tile">3 pending</span></strong><small>Changes waiting on you</small></span>
+            <svg class="i go" data-icon="arrow-right"></svg>
+          </a>
+        </nav>
       </div>
       <footer class="footer hm-foot"><span>© 2026 Lumio. All rights reserved.</span><span>Design prototype</span></footer>
     </main>
@@ -1924,9 +1925,8 @@ function areaChart(vals,{w=400,h=120,stroke,fill,cls='',dot=true,draw=false}){
   </svg>`;
 }
 
-/* ---------- Home: greeting, featured metric and recently viewed (example data) ---------- */
+/* ---------- Home: greeting and featured metric (example data) ---------- */
 const HOME_FEATURED='FIN-003';
-const HOME_RECENT=[['FIN-003','chart-column','Viewed 2h ago'],['FIN-004','database','Viewed yesterday'],['PRD-002','trending-up','Viewed 2 days ago']];
 function renderHome(){
   const hr=new Date().getHours();
   document.getElementById('hm-greet').textContent=`Good ${hr<12?'morning':hr<18?'afternoon':'evening'}, ${PROFILE.name.split(' ')[0]}`;
@@ -1935,10 +1935,7 @@ function renderHome(){
   f.innerHTML=`<div class="hm-fhead"><strong>${esc(m.name)}</strong><span class="hm-cert">${m.status==='certified'?'<svg data-icon="check"></svg>':''}${stLabel(m.status)}</span></div>
     <div class="hm-fval"><b>${esc(m.value)}</b><span class="hm-delta ${m.delta[1]}"><svg data-icon="${m.delta[2]}"></svg>${esc(m.delta[0])}</span></div>
     <div class="hm-fchart">${areaChart(m.s,{w:360,h:120,stroke:'#ff8904',fill:'#ff8904',draw:true})}</div>`;
-  const rec=document.getElementById('hm-recent');
-  rec.innerHTML=HOME_RECENT.map(([code,icon,when])=>{const r=CATALOG.find(x=>x.code===code);
-    return `<a class="hm-tile" href="#/metric/${code}"><span class="hm-ico"><svg data-icon="${icon}"></svg></span><span><strong>${esc(r.name)}</strong><small>${esc(when)}</small></span></a>`}).join('');
-  hydrateIcons(f);hydrateIcons(rec);
+  hydrateIcons(f);
 }
 
 /* ---------- Home search: questions go to Lumio AI, everything else to the catalog ---------- */
